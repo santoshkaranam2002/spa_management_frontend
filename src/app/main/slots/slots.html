@@ -1,0 +1,58 @@
+<div class="page-enter grid">
+
+  <div class="stat-grid">
+    <div class="stat" style="background:var(--sage-soft)"><div class="stat__value">{{ counts.available }}</div><div class="stat__label">Available</div></div>
+    <div class="stat" style="background:var(--plum-50)"><div class="stat__value">{{ counts.booked }}</div><div class="stat__label">Booked</div></div>
+    <div class="stat" style="background:var(--gold-soft)"><div class="stat__value">{{ counts.inprogress }}</div><div class="stat__label">In Progress</div></div>
+    <div class="stat" style="background:var(--cream-2)"><div class="stat__value">{{ counts.blocked }}</div><div class="stat__label">Blocked</div></div>
+  </div>
+
+  <div class="two-col">
+    <!-- Today's slots -->
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h">
+        <div><h3>Today’s Slots</h3><div class="sp-sub">Tap a free slot to block / unblock it</div></div>
+        <div class="legend">
+          <span><i class="lg lg-a"></i>Free</span>
+          <span><i class="lg lg-b"></i>Booked</span>
+          <span><i class="lg lg-i"></i>Active</span>
+          <span><i class="lg lg-x"></i>Blocked</span>
+        </div>
+      </div>
+      <div class="slot-grid">
+        @for (s of slots; track s.id) {
+          <div [class]="slotClass(s.status)" (click)="cycleSlot(s)">
+            <div class="slot__time">{{ s.start }}–{{ s.end }}</div>
+            @if (s.customerName) {
+              <div class="slot__cust">{{ s.customerName }}</div>
+              <div class="slot__svc">{{ s.serviceName }}</div>
+            } @else {
+              <div class="slot__status">{{ slotLabel(s.status) }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Weekly schedule -->
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h"><div><h3>Weekly Schedule</h3><div class="sp-sub">Working days & hours</div></div></div>
+      @for (d of schedule; track d.day) {
+        <div class="dayrow">
+          <button class="switch" [class.on]="d.isActive" (click)="toggleDay(d.day)"><span></span></button>
+          <div class="dayrow__main">
+            <div class="dayrow__name">{{ d.day }}</div>
+            <div class="dayrow__tmpl">{{ d.template }}</div>
+          </div>
+          @if (d.isActive) {
+            <div class="dayrow__hours mono">{{ d.startTime }}–{{ d.endTime }}</div>
+          } @else {
+            <span class="sp-badge gray no-dot">Closed</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

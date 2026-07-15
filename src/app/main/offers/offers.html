@@ -1,0 +1,54 @@
+<div class="page-enter grid">
+
+  <div class="stat-grid">
+    <div class="stat" style="background:var(--sage-soft)"><div class="stat__value">{{ counts.active }}</div><div class="stat__label">Active Offers</div></div>
+    <div class="stat" style="background:var(--info-soft)"><div class="stat__value">{{ counts.scheduled }}</div><div class="stat__label">Scheduled</div></div>
+    <div class="stat" style="background:var(--plum-50)"><div class="stat__value">{{ counts.totalUsage }}</div><div class="stat__label">Total Redemptions</div></div>
+    <div class="stat" style="background:var(--gold-soft)"><div class="stat__value">{{ counts.coupons }}</div><div class="stat__label">Coupon Codes</div></div>
+  </div>
+
+  <div class="sp-card sp-card-pad-sm flex items-center" style="justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="sp-tabs">
+      <button class="sp-tab" [class.active]="filter === 'All'" (click)="setFilter('All')">All</button>
+      <button class="sp-tab" [class.active]="filter === 'Offer'" (click)="setFilter('Offer')">Offers</button>
+      <button class="sp-tab" [class.active]="filter === 'Coupon'" (click)="setFilter('Coupon')">Coupons</button>
+      <button class="sp-tab" [class.active]="filter === 'Banner'" (click)="setFilter('Banner')">Banners</button>
+    </div>
+    <button class="sp-btn sp-btn-primary sp-btn-sm"><app-icon name="plus" [size]="15"></app-icon> Create Offer</button>
+  </div>
+
+  <div class="cards-grid">
+    @for (o of offers; track o.id) {
+      <div class="sp-card sp-card-pad hover offer">
+        <div class="offer__top">
+          <span [class]="typeClass(o.type)">{{ o.type }}</span>
+          <span [class]="statusClass(o.status)">{{ o.status }}</span>
+        </div>
+        <div class="offer__discount">{{ o.discount }}</div>
+        <h3 class="offer__name">{{ o.name }}</h3>
+        <div class="offer__applies muted">{{ o.appliesTo }}</div>
+
+        @if (o.couponCode) {
+          <button class="offer__code" (click)="copyCode(o)" title="Copy code">
+            <span class="mono">{{ o.couponCode }}</span>
+            <app-icon name="clipboard" [size]="14"></app-icon>
+          </button>
+        }
+
+        <div class="offer__meta">
+          <span><app-icon name="calendar" [size]="13"></app-icon> Until {{ o.validUntil }}</span>
+          <span><app-icon name="trend" [size]="13"></app-icon> {{ o.usage }} uses</span>
+        </div>
+
+        <div class="offer__foot">
+          <button class="sp-btn sp-btn-sm" [class.sp-btn-soft]="o.status !== 'Active'" [class.sp-btn-ghost]="o.status === 'Active'" (click)="toggleStatus(o)">
+            {{ o.status === 'Active' ? 'End Offer' : 'Activate' }}
+          </button>
+          <button class="mini danger" (click)="remove(o)"><app-icon name="trash" [size]="14"></app-icon></button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

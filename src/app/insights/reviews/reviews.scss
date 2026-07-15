@@ -1,0 +1,8 @@
+  .rev__head { display:flex; align-items:center; gap:12px; }
+  .rev__id { flex:1; min-width:0; }
+  .rev__name { font-weight:700; font-size:14.5px; }
+  .rev__svc { font-size:12px; color:var(--muted); }
+  .rev__stars { display:flex; gap:2px; margin:14px 0 10px; }
+  .rev__comment { font-size:13.5px; color:var(--ink-soft); line-height:1.55; font-style:italic; min-height:60px; }
+  .rev__foot { padding-top:14px; border-top:1px solid var(--line-soft); }
+  .rev__quote { background:var(--cream); border-left:3px solid var(--plum-400); padding:12px 14px; border-radius:0 var(--r-sm) var(--r-sm) 0; font-size:13px; font-style:italic; color:var(--ink-soft); margin-bottom:16px; }

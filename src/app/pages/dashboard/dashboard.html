@@ -1,0 +1,98 @@
+<div class="page-enter grid">
+
+  <!-- Stat cards -->
+  <div class="stat-grid">
+    @for (s of stats; track s.label) {
+      <div class="stat" [style.background]="s.accentBg">
+        <div class="stat__top">
+          <div class="stat__icon" [style.background]="s.iconBg" [style.color]="s.iconColor">
+            <app-icon [name]="s.icon" [size]="22"></app-icon>
+          </div>
+          <span class="stat__trend" [class.up]="s.trendUp" [class.down]="!s.trendUp">
+            <app-icon [name]="s.trendUp ? 'arrowUp' : 'arrowDown'" [size]="13"></app-icon>{{ s.trend }}
+          </span>
+        </div>
+        <div class="stat__value">{{ s.value }}</div>
+        <div class="stat__label">{{ s.label }}</div>
+        <div class="stat__footer">{{ s.footer }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Revenue + Top services -->
+  <div class="two-col">
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h">
+        <div>
+          <h3>Revenue Overview</h3>
+          <div class="sp-sub">Monthly earnings across the year</div>
+        </div>
+        <span class="sp-badge green no-dot">+18% YoY</span>
+      </div>
+      <div class="chart">
+        @for (p of chart; track p.label) {
+          <div class="chart__col" [title]="p.value">
+            <div class="chart__bar" [style.height.%]="barPct(p.value)"></div>
+            <span class="chart__lbl">{{ p.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h"><h3>Top Services</h3></div>
+      @for (t of top; track t.name) {
+        <div class="topsvc">
+          <div class="topsvc__row">
+            <span class="topsvc__name">{{ t.name }}</span>
+            <span class="topsvc__count">{{ t.bookings }}</span>
+          </div>
+          <div class="topsvc__track">
+            <div class="topsvc__fill" [style.width.%]="ringPct(t.bookings)" [style.background]="t.color"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Upcoming + Activity -->
+  <div class="two-col">
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h">
+        <div><h3>Upcoming Appointments</h3><div class="sp-sub">Next 5 bookings today</div></div>
+        <a class="sp-btn sp-btn-soft sp-btn-sm" routerLink="/main/daily-bookings">View all <app-icon name="chevronRight" [size]="14"></app-icon></a>
+      </div>
+
+      @for (b of upcoming; track b.id) {
+        <div class="apptrow">
+          <div class="avatar avatar-grad-{{ b.avatarGrad }}">{{ initials(b.customerName) }}</div>
+          <div class="apptrow__main">
+            <div class="apptrow__name">{{ b.customerName }}</div>
+            <div class="apptrow__svc">{{ b.service }}</div>
+          </div>
+          <div class="apptrow__meta">
+            <div class="apptrow__time">{{ b.time }}</div>
+            <div class="apptrow__price">{{ cur(b.price) }}</div>
+          </div>
+          <span [class]="statusClass(b.status)">{{ statusLabel(b.status) }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h">
+        <div><h3>Live Activity</h3></div>
+        <a class="sp-btn sp-btn-ghost sp-btn-sm" routerLink="/insights/notifications">All</a>
+      </div>
+      @for (a of activity; track a.id) {
+        <div class="actrow">
+          <span class="actrow__dot" [class]="toneClass(a.tone)"></span>
+          <div class="actrow__body">
+            <span class="actrow__who">{{ a.who }}</span> {{ a.what }}
+            <div class="actrow__time">{{ a.when }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

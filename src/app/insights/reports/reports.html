@@ -1,0 +1,62 @@
+<div class="page-enter grid">
+
+  <div class="flex items-center" style="justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="sp-tabs">
+      <button class="sp-tab" [class.active]="range === 'Week'" (click)="setRange('Week')">This Week</button>
+      <button class="sp-tab" [class.active]="range === 'Month'" (click)="setRange('Month')">This Month</button>
+      <button class="sp-tab" [class.active]="range === 'Year'" (click)="setRange('Year')">This Year</button>
+    </div>
+    <button class="sp-btn sp-btn-ink sp-btn-sm" (click)="exportReport()"><app-icon name="download" [size]="15"></app-icon> Export</button>
+  </div>
+
+  <div class="stat-grid">
+    @for (k of kpis; track k.label) {
+      <div class="stat">
+        <div class="stat__top">
+          <div class="stat__icon kpi-{{ k.tone }}"><app-icon [name]="k.icon" [size]="22"></app-icon></div>
+          <span class="stat__trend" [class.up]="k.up" [class.down]="!k.up">
+            <app-icon [name]="k.up ? 'arrowUp' : 'arrowDown'" [size]="13"></app-icon>{{ k.trend }}
+          </span>
+        </div>
+        <div class="stat__value">{{ k.value }}</div>
+        <div class="stat__label">{{ k.label }}</div>
+      </div>
+    }
+  </div>
+
+  <div class="two-col">
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h"><div><h3>Revenue Trend</h3><div class="sp-sub">Monthly performance</div></div><span class="sp-badge green no-dot">Growing</span></div>
+      <div class="chart">
+        @for (p of chart; track p.label) {
+          <div class="chart__col">
+            <div class="chart__bar" [style.height.%]="barPct(p.value)"></div>
+            <span class="chart__lbl">{{ p.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="sp-card sp-card-pad">
+      <div class="sp-card-h"><h3>Service Mix</h3></div>
+      @for (t of top; track t.name) {
+        <div class="topsvc">
+          <div class="topsvc__row"><span class="topsvc__name">{{ t.name }}</span><span class="topsvc__count">{{ ringPct(t.bookings) }}%</span></div>
+          <div class="topsvc__track"><div class="topsvc__fill" [style.width.%]="ringPct(t.bookings)" [style.background]="t.color"></div></div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="sp-card sp-card-pad">
+    <div class="sp-card-h"><div><h3>Summary</h3><div class="sp-sub">Key highlights for {{ range }}</div></div></div>
+    <div class="summary">
+      <div class="summary__item"><app-icon name="trend" [size]="18"></app-icon><div><b>Revenue up 18%</b><span>Best growth in Q4, driven by packages</span></div></div>
+      <div class="summary__item"><app-icon name="sparkle" [size]="18"></app-icon><div><b>Aroma Facial leads</b><span>38 bookings — your top single service</span></div></div>
+      <div class="summary__item"><app-icon name="users" [size]="18"></app-icon><div><b>68% repeat rate</b><span>Loyalty holding strong across visits</span></div></div>
+      <div class="summary__item"><app-icon name="clock" [size]="18"></app-icon><div><b>Peak hours 11 AM–2 PM</b><span>Consider more staff in this window</span></div></div>
+    </div>
+  </div>
+</div>
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

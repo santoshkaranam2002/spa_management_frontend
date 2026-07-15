@@ -1,0 +1,82 @@
+<div class="page-enter grid">
+
+  <div class="stat-grid">
+    <div class="stat"><div class="stat__value">{{ counts.total }}</div><div class="stat__label">Team Members</div></div>
+    <div class="stat" style="background:var(--sage-soft)"><div class="stat__value">{{ counts.available }}</div><div class="stat__label">Available Now</div></div>
+    <div class="stat" style="background:var(--plum-50)"><div class="stat__value">{{ counts.bookings }}</div><div class="stat__label">Bookings Today</div></div>
+    <div class="stat" style="background:var(--gold-soft)"><div class="stat__value">{{ cur(counts.earnings) }}</div><div class="stat__label">Earnings Today</div></div>
+  </div>
+
+  <div class="flex items-center" style="justify-content:space-between;">
+    <h2 class="sec-title">Roster</h2>
+    <button class="sp-btn sp-btn-primary sp-btn-sm" (click)="openNew()"><app-icon name="plus" [size]="15"></app-icon> Add Member</button>
+  </div>
+
+  <div class="cards-grid">
+    @for (s of staff; track s.id) {
+      <div class="sp-card sp-card-pad hover stf">
+        <div class="stf__top">
+          <div class="avatar avatar-grad-{{ s.avatarGrad }}" style="width:52px;height:52px;font-size:17px;">{{ initials(s.name) }}</div>
+          <div class="stf__id">
+            <h3 class="stf__name">{{ s.name }}</h3>
+            <span [class]="roleClass(s.role)">{{ s.role }}</span>
+          </div>
+          <span class="stf__avail" [class.on]="s.isAvailable">{{ s.isAvailable ? 'Available' : 'Busy' }}</span>
+        </div>
+
+        <div class="stf__stars">
+          @for (f of stars(s.rating); track $index) {
+            <app-icon name="star" [size]="14" [fill]="f ? 'var(--gold)' : 'none'" [style.color]="f ? 'var(--gold)' : 'var(--line)'"></app-icon>
+          }
+        </div>
+
+        <div class="stf__skills">
+          @for (sk of s.skills; track sk) { <span class="sp-badge gray no-dot">{{ sk }}</span> }
+        </div>
+
+        <div class="stf__metrics">
+          <div><span class="m-v">{{ s.bookingsToday }}</span><span class="m-l">Bookings</span></div>
+          <div><span class="m-v">{{ cur(s.earningsToday) }}</span><span class="m-l">Earned</span></div>
+        </div>
+
+        <div class="stf__foot">
+          <button class="switch" [class.on]="s.isAvailable" (click)="toggleAvail(s)" title="Availability"><span></span></button>
+          <div class="flex gap-8">
+            <button class="mini" (click)="openEdit(s)"><app-icon name="edit" [size]="14"></app-icon></button>
+            <button class="mini danger" (click)="remove(s)"><app-icon name="trash" [size]="14"></app-icon></button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@if (showEdit) {
+  <div class="sp-overlay" (click)="closeEdit()">
+    <div class="sp-modal" (click)="$event.stopPropagation()">
+      <div class="sp-modal__head">
+        <div><h3>{{ editing ? 'Edit Member' : 'Add Member' }}</h3><p>Team member details</p></div>
+        <button class="sp-modal__x" (click)="closeEdit()"><app-icon name="x" [size]="16"></app-icon></button>
+      </div>
+      <div class="sp-modal__body">
+        <div class="form-grid">
+          <div class="sp-field full"><label>Name <span class="req">*</span></label><input class="sp-input" [(ngModel)]="form.name" /></div>
+          <div class="sp-field"><label>Role</label>
+            <select class="sp-select" [(ngModel)]="form.role">
+              <option>Manager</option><option>Senior</option><option>Therapist</option><option>Trainee</option>
+            </select>
+          </div>
+          <div class="sp-field"><label>Phone</label><input class="sp-input" [(ngModel)]="form.phone" /></div>
+          <div class="sp-field full"><label>Email</label><input class="sp-input" [(ngModel)]="form.email" /></div>
+          <div class="sp-field full"><label>Skills (comma separated)</label><input class="sp-input" [(ngModel)]="form.skills" placeholder="Facial, Massage, …" /></div>
+        </div>
+      </div>
+      <div class="sp-modal__foot">
+        <button class="sp-btn sp-btn-ghost" (click)="closeEdit()">Cancel</button>
+        <button class="sp-btn sp-btn-primary" (click)="save()">{{ editing ? 'Save' : 'Add' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

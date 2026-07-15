@@ -1,0 +1,13 @@
+<div class="app" [class.mobile-open]="mobileOpen()">
+
+  <div class="sb-overlay" (click)="closeMobile()"></div>
+
+  <app-sidenav (closeMobile)="closeMobile()"></app-sidenav>
+
+  <div class="main-col">
+    <app-header (toggleSidenav)="toggleMobile()"></app-header>
+    <main class="sp-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

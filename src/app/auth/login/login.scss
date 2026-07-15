@@ -1,0 +1,199 @@
+/* Uses the global spa theme variables from styles.scss (plum & cream). */
+:host { display: block; }
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(1100px 520px at 82% -10%, var(--rose-soft), transparent 60%),
+    radial-gradient(900px 500px at 8% 110%, var(--plum-50), transparent 55%),
+    var(--cream);
+}
+
+/* decorative soft blobs */
+.bloom {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.bloom--1 { width: 340px; height: 340px; top: -80px; right: -60px; background: var(--rose-soft); }
+.bloom--2 { width: 300px; height: 300px; bottom: -90px; left: -70px; background: var(--gold-soft); }
+
+.login-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+/* ── Brand ── */
+.brand { margin-bottom: 22px; }
+.brand__mark {
+  width: 62px; height: 62px;
+  margin: 0 auto 14px;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  background: linear-gradient(140deg, var(--plum-500), var(--plum-600));
+  box-shadow: 0 12px 26px rgba(142, 35, 88, 0.30);
+}
+.brand__name {
+  font-family: var(--font-serif, 'DM Serif Display', Georgia, serif);
+  font-size: 27px;
+  color: #2A0A1A;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+.brand__sub { color: var(--muted); font-size: 13.5px; margin: 4px 0 0; }
+
+/* ── Card ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 30px 30px 26px;
+  box-shadow: 0 20px 55px rgba(30, 27, 38, 0.10);
+  text-align: left;
+}
+.card__head { text-align: center; margin-bottom: 22px; }
+.card__head h2 {
+  font-family: var(--font-serif, 'DM Serif Display', Georgia, serif);
+  font-size: 25px;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.card__head p { color: var(--muted); font-size: 13.5px; margin: 0; }
+
+/* ── Fields ── */
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 14px;
+  margin-bottom: 18px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+.field:focus-within {
+  background: #fff;
+  border-color: var(--plum-400);
+  box-shadow: 0 0 0 3px rgba(142, 35, 88, 0.12);
+}
+.field__icon { color: var(--muted-2, #A39BAB); flex-shrink: 0; }
+.field input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.field input::placeholder { color: var(--muted-2, #A39BAB); }
+.field__eye {
+  border: 0; background: transparent; cursor: pointer;
+  color: var(--muted); display: flex; padding: 4px;
+  border-radius: 8px; transition: color 140ms ease;
+}
+.field__eye:hover { color: var(--plum-500); }
+
+/* ── Remember / Forgot ── */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2px 0 22px;
+}
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+.check input { display: none; }
+.check .box {
+  width: 18px; height: 18px;
+  border-radius: 6px;
+  border: 1.6px solid var(--line);
+  background: #fff;
+  position: relative;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.check input:checked + .box {
+  background: var(--plum-600);
+  border-color: var(--plum-600);
+}
+.check input:checked + .box::after {
+  content: '';
+  position: absolute;
+  left: 5px; top: 1.5px;
+  width: 5px; height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.link {
+  color: var(--plum-500);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.link:hover { color: var(--plum-600); text-decoration: underline; }
+
+/* ── Sign in button ── */
+.signin {
+  width: 100%;
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--plum-500), var(--plum-600));
+  box-shadow: 0 12px 26px rgba(142, 35, 88, 0.30);
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+.signin:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 16px 32px rgba(142, 35, 88, 0.34); }
+.signin:active { transform: translateY(0); }
+
+.foot-link {
+  text-align: center;
+  margin: 18px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.demo-note { margin: 20px 0 4px; font-size: 12.5px; color: var(--muted-2, #A39BAB); }
+.copyright { margin: 0; font-size: 12px; color: var(--muted-2, #A39BAB); }
+
+/* ── Responsive ── */
+@media (max-width: 460px) {
+  .card { padding: 24px 20px 22px; border-radius: 18px; }
+  .brand__name { font-size: 24px; }
+}

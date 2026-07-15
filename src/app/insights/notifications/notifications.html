@@ -1,0 +1,32 @@
+<div class="page-enter grid">
+
+  <div class="sp-card sp-card-pad-sm flex items-center" style="justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="sp-tabs">
+      <button class="sp-tab" [class.active]="filter === 'All'" (click)="setFilter('All')">All</button>
+      <button class="sp-tab" [class.active]="filter === 'Unread'" (click)="setFilter('Unread')">Unread ({{ unreadCount }})</button>
+    </div>
+    <button class="sp-btn sp-btn-ghost sp-btn-sm" (click)="markAll()"><app-icon name="checkCircle" [size]="15"></app-icon> Mark all read</button>
+  </div>
+
+  <div class="sp-card sp-card-pad">
+    @if (notifications.length) {
+      @for (n of notifications; track n.id) {
+        <div class="notif" [class.unread]="!n.isRead">
+          <div class="notif__icon" [class]="toneClass(n.tone)">
+            <app-icon [name]="toneIcon(n.tone)" [size]="17"></app-icon>
+          </div>
+          <div class="notif__body">
+            <div class="notif__text"><b>{{ n.who }}</b> {{ n.what }}</div>
+            <div class="notif__time">{{ n.when }}</div>
+          </div>
+          <div class="notif__acts">
+            @if (!n.isRead) { <button class="mini" title="Mark read" (click)="markRead(n)"><app-icon name="check" [size]="14"></app-icon></button> }
+            <button class="mini danger" title="Remove" (click)="remove(n)"><app-icon name="x" [size]="14"></app-icon></button>
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="empty"><app-icon name="bell" [size]="40"></app-icon><p>You’re all caught up ✨</p></div>
+    }
+  </div>
+</div>

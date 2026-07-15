@@ -1,0 +1,35 @@
+<aside class="sb">
+  <div class="sb-brand">
+    <div class="sb-logo">
+      <app-icon name="leaf" [size]="22"></app-icon>
+    </div>
+    <div class="sb-name">
+      <span class="n1">Spot Booking</span>
+      <span class="n2">Spa &amp; Wellness</span>
+    </div>
+  </div>
+
+  <div class="sb-scroll scroll-y">
+    @for (section of sections; track section.title) {
+      <div class="sb-section-label">{{ section.title }}</div>
+      @for (item of section.items; track item.route) {
+        <a class="sb-nav-item" [routerLink]="item.route" routerLinkActive="active" (click)="onLinkClick()">
+          <app-icon class="ico" [name]="item.icon" [size]="18"></app-icon>
+          <span class="label">{{ item.label }}</span>
+          @if (item.badge) { <span class="pill">{{ item.badge }}</span> }
+        </a>
+      }
+    }
+  </div>
+
+  <div class="sb-foot">
+    <a class="sb-profile" routerLink="/settings" (click)="onLinkClick()">
+      <div class="avatar avatar-grad-1" style="width:36px;height:36px;font-size:12px;">AJ</div>
+      <div>
+        <div class="who">Anjali Joshi</div>
+        <div class="role">Owner · Serene Spa</div>
+      </div>
+      <span class="gear"><app-icon name="settings" [size]="16"></app-icon></span>
+    </a>
+  </div>
+</aside>

@@ -1,0 +1,88 @@
+<div class="page-enter">
+  <div class="chat" [class.show-thread]="mobileThread">
+
+    <!-- Conversation list -->
+    <div class="sp-card chat__list">
+      <div class="chat__list-head">
+        <h3>Messages</h3>
+        <div class="sp-searchbar" style="height:34px;min-width:0;flex:1;margin-left:12px;">
+          <app-icon name="search" [size]="14"></app-icon>
+          <input placeholder="Search…" />
+        </div>
+      </div>
+      <div class="chat__convos scroll-y">
+        @for (c of conversations; track c.id) {
+          <div class="convo" [class.active]="c.id === activeId" (click)="select(c)">
+            <div class="convo__av">
+              <div class="avatar avatar-grad-{{ c.avatarGrad }}" style="width:44px;height:44px;">{{ initials(c.name) }}</div>
+              @if (c.isOnline) { <span class="convo__dot"></span> }
+            </div>
+            <div class="convo__body">
+              <div class="convo__row1">
+                <span class="convo__name">{{ c.name }}</span>
+                <span class="convo__time">{{ c.time }}</span>
+              </div>
+              <div class="convo__row2">
+                <span class="convo__last">{{ c.lastMessage }}</span>
+                @if (c.unreadCount) { <span class="convo__badge">{{ c.unreadCount }}</span> }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Thread -->
+    <div class="sp-card chat__thread">
+      @if (active; as a) {
+        <div class="thread__head">
+          <button class="mini back" (click)="backToList()"><app-icon name="chevronLeft" [size]="18"></app-icon></button>
+          <div class="avatar avatar-grad-{{ a.avatarGrad }}" style="width:42px;height:42px;">{{ initials(a.name) }}</div>
+          <div class="thread__id">
+            <div class="thread__name">{{ a.name }}</div>
+            <div class="thread__sub">{{ a.isOnline ? 'Online now' : 'Offline' }} · {{ a.lastBooking }}</div>
+          </div>
+          <div class="flex gap-8">
+            <button class="sp-icon-btn" title="Call"><app-icon name="phone" [size]="17"></app-icon></button>
+            <button class="sp-icon-btn" title="Video"><app-icon name="video" [size]="17"></app-icon></button>
+          </div>
+        </div>
+
+        <div class="thread__body scroll-y">
+          @for (m of messages; track m.id) {
+            @if (m.type === 'text') {
+              <div class="msg" [class.me]="m.from === 'Me'">
+                <div class="msg__bubble">{{ m.text }}</div>
+                <div class="msg__time">{{ m.time }}</div>
+              </div>
+            } @else {
+              <div class="msg me">
+                <div class="msg__slots">
+                  <div class="msg__slots-head"><app-icon name="calendar" [size]="14"></app-icon> Suggested slots</div>
+                  @for (s of m.slots; track s.time) {
+                    <div class="slotsug">
+                      <div>
+                        <div class="slotsug__time">{{ s.time }}</div>
+                        @if (s.save) { <div class="slotsug__save">{{ s.save }}</div> }
+                      </div>
+                      <div class="flex items-center gap-8">
+                        <span class="slotsug__price">{{ cur(s.price) }}</span>
+                        <button class="sp-btn sp-btn-primary sp-btn-sm" (click)="confirmSlot(s)">Book</button>
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div class="msg__time">{{ m.time }}</div>
+              </div>
+            }
+          }
+        </div>
+
+        <div class="thread__compose">
+          <input class="sp-input" placeholder="Type a message…" [(ngModel)]="draft" (keyup.enter)="send()" />
+          <button class="sp-btn sp-btn-primary" (click)="send()"><app-icon name="send" [size]="16"></app-icon></button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

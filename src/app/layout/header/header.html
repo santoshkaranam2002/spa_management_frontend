@@ -1,0 +1,56 @@
+<header class="sp-topbar">
+  <button class="burger" (click)="toggleSidenav.emit()" aria-label="Menu">
+    <app-icon name="grid" [size]="18"></app-icon>
+  </button>
+  <div class="crumb">
+    <h1>{{ pageTitle() }}</h1>
+    <p>{{ pageSub() }}</p>
+  </div>
+  <div class="actions">
+    <div class="sp-searchbar hide-sm">
+      <app-icon name="search" [size]="16"></app-icon>
+      <input placeholder="Search customers, services…" />
+    </div>
+
+    <a class="sp-icon-btn" routerLink="/insights/notifications" title="Notifications">
+      <app-icon name="bell" [size]="18"></app-icon>
+      <span class="notif-dot">3</span>
+    </a>
+
+    <!-- <a class="sp-icon-btn hide-sm" routerLink="/settings" title="Settings">
+      <app-icon name="settings" [size]="17"></app-icon>
+    </a> -->
+
+    <!-- Profile -->
+    <div class="hdr-profile" (click)="$event.stopPropagation()">
+      <button class="hdr-profile__trigger" (click)="toggleProfile($event)">
+        <span class="hdr-profile__avatar">{{ userInitials }}</span>
+        <span class="hdr-profile__meta hide-sm">
+          <span class="hdr-profile__name">{{ currentUser().name }}</span>
+          <span class="hdr-profile__role">{{ currentUser().role }}</span>
+        </span>
+      </button>
+
+      @if (profileOpen()) {
+        <div class="hdr-profile__menu">
+          <div class="hdr-profile__menu-head">
+            <span class="hdr-profile__avatar lg">{{ userInitials }}</span>
+            <div>
+              <div class="hdr-profile__name">{{ currentUser().name }}</div>
+              <div class="hdr-profile__role">{{ currentUser().role }}</div>
+            </div>
+          </div>
+          <div class="hdr-profile__divider"></div>
+          <a class="hdr-profile__item" routerLink="/settings" (click)="profileOpen.set(false)">
+            <app-icon name="settings" [size]="16"></app-icon>
+            <span>Account Settings</span>
+          </a>
+          <button class="hdr-profile__item danger" (click)="logout()">
+            <app-icon name="log-out" [size]="16"></app-icon>
+            <span>Logout</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

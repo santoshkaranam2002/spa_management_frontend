@@ -1,0 +1,12 @@
+  .chip { padding:8px 14px; border-radius:var(--r-pill); border:1px solid var(--line); background:var(--surface); color:var(--muted); font-size:12.5px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+  .chip.on { background:var(--rose-soft); color:var(--plum-600); border-color:var(--rose); }
+  .rowacts { display:flex; gap:6px; }
+  .mini { width:30px; height:30px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--muted); cursor:pointer; display:grid; place-items:center; }
+  .mini:hover { color:var(--plum-600); border-color:var(--plum-300); }
+  .mini.danger:hover { color:var(--danger); border-color:var(--danger); }
+  .dstat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px; }
+  .dstat { background:var(--cream); border-radius:var(--r-md); padding:14px; text-align:center; }
+  .dstat__v { font-size:18px; font-weight:800; color:var(--plum-600); }
+  .dstat__l { font-size:11px; color:var(--muted); margin-top:2px; }
+  .dfield { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line-soft); font-size:13.5px; color:var(--ink-soft); }
+  .dfield app-icon { color:var(--plum-400); }

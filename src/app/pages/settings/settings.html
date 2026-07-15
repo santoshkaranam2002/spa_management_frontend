@@ -1,0 +1,54 @@
+<div class="page-enter grid" style="max-width:820px;">
+
+  <!-- Business profile -->
+  <div class="sp-card sp-card-pad">
+    <div class="sp-card-h"><div class="flex items-center gap-12"><app-icon name="clipboard" [size]="18" style="color:var(--plum-500)"></app-icon><h3>Business Profile</h3></div></div>
+    <div class="form-grid">
+      <div class="sp-field full"><label>Business name</label><input class="sp-input" [(ngModel)]="businessName" /></div>
+      <div class="sp-field"><label>Owner</label><input class="sp-input" [(ngModel)]="ownerName" /></div>
+      <div class="sp-field"><label>Phone</label><input class="sp-input" [(ngModel)]="phone" /></div>
+      <div class="sp-field"><label>Email</label><input class="sp-input" [(ngModel)]="email" /></div>
+      <div class="sp-field"><label>Address</label><input class="sp-input" [(ngModel)]="address" /></div>
+    </div>
+  </div>
+
+  <!-- Preferences -->
+  <div class="sp-card sp-card-pad">
+    <div class="sp-card-h"><div class="flex items-center gap-12"><app-icon name="settings" [size]="18" style="color:var(--plum-500)"></app-icon><h3>Preferences</h3></div></div>
+    @for (p of prefs; track p.key) {
+      <div class="prefrow">
+        <div class="prefrow__main"><div class="prefrow__label">{{ p.label }}</div><div class="prefrow__desc">{{ p.desc }}</div></div>
+        <button class="switch" [class.on]="p.on" (click)="togglePref(p.key)"><span></span></button>
+      </div>
+    }
+  </div>
+
+  <!-- Display -->
+  <div class="sp-card sp-card-pad">
+    <div class="sp-card-h"><div class="flex items-center gap-12"><app-icon name="palette" [size]="18" style="color:var(--plum-500)"></app-icon><h3>Display &amp; Currency</h3></div></div>
+
+    <div class="sp-field" style="margin-bottom:18px;">
+      <label>Currency</label>
+      <div class="seg">
+        <button class="seg__btn" [class.on]="currency === 'INR'" (click)="setCurrency('INR')">₹ INR</button>
+        <button class="seg__btn" [class.on]="currency === 'USD'" (click)="setCurrency('USD')">$ USD</button>
+        <button class="seg__btn" [class.on]="currency === 'EUR'" (click)="setCurrency('EUR')">€ EUR</button>
+      </div>
+    </div>
+
+    <div class="sp-field">
+      <label>Density</label>
+      <div class="seg">
+        <button class="seg__btn" [class.on]="density === 'comfortable'" (click)="setDensity('comfortable')">Comfortable</button>
+        <button class="seg__btn" [class.on]="density === 'compact'" (click)="setDensity('compact')">Compact</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex" style="justify-content:flex-end;gap:10px;">
+    <button class="sp-btn sp-btn-ghost">Reset</button>
+    <button class="sp-btn sp-btn-primary" (click)="save()"><app-icon name="check" [size]="15"></app-icon> Save Changes</button>
+  </div>
+</div>
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

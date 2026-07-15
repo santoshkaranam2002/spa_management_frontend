@@ -1,0 +1,67 @@
+<div class="page-enter grid">
+
+  <div class="stat-grid">
+    <div class="stat" style="background:var(--gold-soft)">
+      <div class="stat__value">{{ stats.avg }} <app-icon name="star" [size]="20" [fill]="'var(--gold)'" style="color:var(--gold);vertical-align:-2px;"></app-icon></div>
+      <div class="stat__label">Average Rating</div>
+    </div>
+    <div class="stat"><div class="stat__value">{{ stats.total }}</div><div class="stat__label">Total Reviews</div></div>
+    <div class="stat" style="background:var(--sage-soft)"><div class="stat__value">{{ stats.fiveStar }}</div><div class="stat__label">5-Star Reviews</div></div>
+    <div class="stat" style="background:var(--plum-50)"><div class="stat__value">{{ stats.replied }}</div><div class="stat__label">Replied</div></div>
+  </div>
+
+  <div class="sp-tabs">
+    <button class="sp-tab" [class.active]="filter === 0" (click)="setFilter(0)">All</button>
+    @for (n of [5,4,3,2,1]; track n) {
+      <button class="sp-tab" [class.active]="filter === n" (click)="setFilter(n)">{{ n }} ★</button>
+    }
+  </div>
+
+  <div class="cards-grid">
+    @for (r of reviews; track r.id) {
+      <div class="sp-card sp-card-pad hover rev">
+        <div class="rev__head">
+          <div class="avatar avatar-grad-{{ r.avatarGrad }}" style="width:44px;height:44px;">{{ initials(r.customerName) }}</div>
+          <div class="rev__id">
+            <div class="rev__name">{{ r.customerName }}</div>
+            <div class="rev__svc">{{ r.service }} · {{ r.date }}</div>
+          </div>
+        </div>
+        <div class="rev__stars">
+          @for (f of starArr(r.rating); track $index) {
+            <app-icon name="star" [size]="15" [fill]="f ? 'var(--gold)' : 'none'" [style.color]="f ? 'var(--gold)' : 'var(--line)'"></app-icon>
+          }
+        </div>
+        <p class="rev__comment">“{{ r.comment }}”</p>
+        <div class="rev__foot">
+          @if (r.isReplied) {
+            <span class="sp-badge green no-dot"><app-icon name="check" [size]="12"></app-icon> Replied</span>
+          } @else {
+            <button class="sp-btn sp-btn-soft sp-btn-sm" (click)="openReply(r)"><app-icon name="reply" [size]="14"></app-icon> Reply</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@if (replyingTo; as r) {
+  <div class="sp-overlay" (click)="closeReply()">
+    <div class="sp-modal" (click)="$event.stopPropagation()">
+      <div class="sp-modal__head">
+        <div><h3>Reply to {{ r.customerName }}</h3><p>{{ r.service }} · {{ r.rating }} ★</p></div>
+        <button class="sp-modal__x" (click)="closeReply()"><app-icon name="x" [size]="16"></app-icon></button>
+      </div>
+      <div class="sp-modal__body">
+        <div class="rev__quote">“{{ r.comment }}”</div>
+        <div class="sp-field"><label>Your reply</label><textarea class="sp-textarea" [(ngModel)]="replyText" placeholder="Thank you for your kind words…"></textarea></div>
+      </div>
+      <div class="sp-modal__foot">
+        <button class="sp-btn sp-btn-ghost" (click)="closeReply()">Cancel</button>
+        <button class="sp-btn sp-btn-primary" (click)="sendReply()">Send Reply</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

@@ -1,0 +1,126 @@
+<div class="page-enter grid">
+
+  <!-- Mini stats -->
+  <div class="stat-grid">
+    <div class="stat"><div class="stat__value">{{ counts.total }}</div><div class="stat__label">Total Today</div></div>
+    <div class="stat"><div class="stat__value">{{ cur(counts.revenue) }}</div><div class="stat__label">Expected Revenue</div></div>
+    <div class="stat"><div class="stat__value">{{ counts.completed }}</div><div class="stat__label">Completed</div></div>
+    <div class="stat"><div class="stat__value">{{ counts.pending }}</div><div class="stat__label">Pending</div></div>
+    <div class="stat" style="background:var(--gold-soft)"><div class="stat__value">{{ counts.offers }}</div><div class="stat__label">Active Offers</div></div>
+  </div>
+
+  <div class="sp-card sp-card-pad">
+    <div class="sp-card-h" style="flex-wrap:wrap;">
+      <div class="sp-tabs">
+        @for (f of filters; track f) {
+          <button class="sp-tab" [class.active]="active === f" (click)="setActive(f)">{{ filterLabel(f) }}</button>
+        }
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="sp-searchbar" style="height:38px;min-width:180px;">
+          <app-icon name="search" [size]="15"></app-icon>
+          <input placeholder="Search…" [(ngModel)]="search" />
+        </div>
+        <button class="sp-btn sp-btn-primary sp-btn-sm" (click)="openAdd()"><app-icon name="plus" [size]="15"></app-icon> New</button>
+      </div>
+    </div>
+
+    @if (bookings.length) {
+      <div class="sp-table-wrap">
+        <table class="sp-table">
+          <thead><tr><th>Customer</th><th>Service</th><th>Time</th><th>Staff</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            @for (b of bookings; track b.id) {
+              <tr>
+                <td>
+                  <div class="flex items-center gap-12">
+                    <div class="avatar avatar-grad-{{ b.avatarGrad }}" style="width:36px;height:36px;font-size:12px;">{{ initials(b.customerName) }}</div>
+                    <span class="cell-main">{{ b.customerName }}</span>
+                  </div>
+                </td>
+                <td>{{ b.service }}</td>
+                <td class="mono">{{ b.time }}</td>
+                <td class="muted">{{ b.staff || '—' }}</td>
+                <td class="cell-main">{{ cur(b.price) }}</td>
+                <td><span [class]="statusClass(b.status)">{{ statusLabel(b.status) }}</span></td>
+                <td>
+                  <div class="rowacts">
+                    @if (b.status !== 'Completed') {
+                      <button class="mini" title="Mark completed" (click)="setStatus(b, 'Completed')"><app-icon name="check" [size]="14"></app-icon></button>
+                    }
+                    @if (b.status !== 'Cancelled') {
+                      <button class="mini danger" title="Cancel" (click)="setStatus(b, 'Cancelled')"><app-icon name="ban" [size]="14"></app-icon></button>
+                    }
+                    <button class="mini danger" title="Remove" (click)="remove(b)"><app-icon name="trash" [size]="14"></app-icon></button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty"><app-icon name="calendar" [size]="40"></app-icon><p>No bookings match this filter.</p></div>
+    }
+  </div>
+</div>
+
+<!-- Add modal -->
+@if (showAdd) {
+  <div class="sp-overlay" (click)="closeAdd()">
+    <div class="sp-modal" (click)="$event.stopPropagation()">
+      <div class="sp-modal__head">
+        <div><h3>New Booking</h3><p>Add a walk-in or phone booking</p></div>
+        <button class="sp-modal__x" (click)="closeAdd()"><app-icon name="x" [size]="16"></app-icon></button>
+      </div>
+      <div class="sp-modal__body">
+        <div class="form-grid">
+          <div class="sp-field full"><label>Customer name <span class="req">*</span></label>
+            <input class="sp-input" [(ngModel)]="form.customerName" placeholder="e.g. Priya Sharma" />
+          </div>
+
+          <div class="sp-field full"><label>Service <span class="req">*</span></label>
+            <select class="sp-select" [(ngModel)]="form.service" (ngModelChange)="onServiceChange()">
+              <option value="">— Select a service —</option>
+              @for (svc of allServices; track svc.id) {
+                <option [value]="svc.name">{{ svc.name }} · {{ cur(svc.price) }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="sp-field"><label>Price (₹)</label>
+            <input class="sp-input" type="number" [(ngModel)]="form.price" placeholder="Auto-filled" />
+          </div>
+
+          <div class="sp-field"><label>Staff</label>
+            <select class="sp-select" [(ngModel)]="form.staff">
+              <option value="">— Assign staff —</option>
+              @for (m of availableStaff; track m.id) { <option [value]="m.name">{{ m.name }} · {{ m.role }}</option> }
+            </select>
+          </div>
+
+          <div class="sp-field full"><label>Time <span class="req">*</span> <span class="hint">— pick an available slot</span></label>
+            @if (availableSlots.length) {
+              <div class="slot-pick">
+                @for (sl of availableSlots; track sl.id) {
+                  <button type="button" class="pick" [class.sel]="form.slotId === sl.id" (click)="selectSlot(sl)">
+                    <span class="pick__time">{{ sl.start }}–{{ sl.end }}</span>
+                    <span class="pick__tag">Available</span>
+                  </button>
+                }
+              </div>
+            } @else {
+              <div class="slot-empty">No free slots right now.</div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="sp-modal__foot">
+        <button class="sp-btn sp-btn-ghost" (click)="closeAdd()">Cancel</button>
+        <button class="sp-btn sp-btn-primary" (click)="save()">Add Booking</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

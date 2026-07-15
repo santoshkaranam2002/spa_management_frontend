@@ -1,0 +1,12 @@
+  .offer__top { display:flex; justify-content:space-between; gap:8px; }
+  .offer__discount { font-family:var(--font-display); font-size:30px; color:var(--plum-600); margin:14px 0 4px; }
+  .offer__name { font-size:15px; }
+  .offer__applies { font-size:12px; margin-top:3px; }
+  .offer__code { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; margin:14px 0; padding:10px 14px; border:1px dashed var(--plum-300); border-radius:var(--r-sm); background:var(--plum-50); color:var(--plum-700); cursor:pointer; font-weight:700; }
+  .offer__code:hover { background:var(--plum-100); }
+  .offer__meta { display:flex; flex-direction:column; gap:6px; margin:12px 0; }
+  .offer__meta span { font-size:12px; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .offer__meta app-icon { color:var(--plum-400); }
+  .offer__foot { display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:14px; border-top:1px solid var(--line-soft); }
+  .mini { width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--muted); cursor:pointer; display:grid; place-items:center; }
+  .mini.danger:hover { color:var(--danger); border-color:var(--danger); }

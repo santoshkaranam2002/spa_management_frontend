@@ -1,0 +1,109 @@
+<div class="page-enter grid">
+
+  <div class="sp-card sp-card-pad-sm flex items-center" style="justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="sp-tabs">
+      <button class="sp-tab" [class.active]="tab === 'services'" (click)="setTab('services')">Services</button>
+      <button class="sp-tab" [class.active]="tab === 'packages'" (click)="setTab('packages')">Packages</button>
+    </div>
+    <div class="flex items-center gap-8">
+      @if (tab === 'services') {
+        <div class="sp-searchbar" style="height:38px;min-width:180px;">
+          <app-icon name="search" [size]="15"></app-icon>
+          <input placeholder="Search…" [(ngModel)]="search" />
+        </div>
+      }
+      <button class="sp-btn sp-btn-primary sp-btn-sm" (click)="openNew()"><app-icon name="plus" [size]="15"></app-icon> New Service</button>
+    </div>
+  </div>
+
+  @if (tab === 'services') {
+    <div class="sp-tabs" style="background:transparent;padding:0;gap:8px;">
+      @for (c of categories; track c) {
+        <button class="chip" [class.on]="category === c" (click)="setCategory(c)">{{ c }}</button>
+      }
+    </div>
+
+    <div class="cards-grid">
+      @for (s of services; track s.id) {
+        <div class="sp-card sp-card-pad hover svc" [class.off]="!s.isActive">
+          <div class="svc__top">
+            <span class="sp-badge plum no-dot">{{ s.category }}</span>
+            <div class="svc__tags">
+              @if (s.isFeatured) { <span class="sp-badge gold no-dot"><app-icon name="sparkle" [size]="11"></app-icon>Featured</span> }
+              @if (s.isPopular) { <span class="sp-badge rose no-dot"><app-icon name="heart" [size]="11"></app-icon>Popular</span> }
+            </div>
+          </div>
+          <h3 class="svc__name">{{ s.name }}</h3>
+          <p class="svc__desc">{{ s.description }}</p>
+          <div class="svc__meta">
+            <span><app-icon name="clock" [size]="14"></app-icon> {{ s.durationMin }} min</span>
+            <span><app-icon name="user" [size]="14"></app-icon> {{ s.for }}</span>
+            <span><app-icon name="calendar" [size]="14"></app-icon> {{ s.bookings }} booked</span>
+          </div>
+          <div class="svc__foot">
+            <div class="svc__price">{{ cur(s.price) }}</div>
+            <div class="svc__acts">
+              <button class="switch" [class.on]="s.isActive" (click)="toggleActive(s)" title="Active"><span></span></button>
+              <button class="mini" (click)="openEdit(s)"><app-icon name="edit" [size]="14"></app-icon></button>
+              <button class="mini danger" (click)="remove(s)"><app-icon name="trash" [size]="14"></app-icon></button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="cards-grid">
+      @for (p of packages; track p.id) {
+        <div class="sp-card sp-card-pad hover pkg" [class.off]="!p.isActive">
+          <div class="svc__top">
+            @if (p.featuredTag !== 'None') { <span class="sp-badge gold no-dot">{{ p.featuredTag }}</span> }
+            <button class="switch" [class.on]="p.isActive" (click)="togglePackage(p.id)"><span></span></button>
+          </div>
+          <h3 class="svc__name">{{ p.name }}</h3>
+          <p class="svc__desc">{{ p.description }}</p>
+          <div class="pkg__pricing">
+            <span class="pkg__now">{{ cur(p.price) }}</span>
+            <span class="pkg__was">{{ cur(p.originalPrice) }}</span>
+            <span class="sp-badge green no-dot">Save {{ cur(saveAmount(p)) }}</span>
+          </div>
+          <div class="svc__meta">
+            <span><app-icon name="clock" [size]="14"></app-icon> {{ p.validityDays }} days validity</span>
+            <span><app-icon name="layers" [size]="14"></app-icon> {{ p.sessions }} session(s)</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- Edit modal -->
+@if (showEdit) {
+  <div class="sp-overlay" (click)="closeEdit()">
+    <div class="sp-modal" (click)="$event.stopPropagation()">
+      <div class="sp-modal__head">
+        <div><h3>{{ editing ? 'Edit Service' : 'New Service' }}</h3><p>Define the treatment details</p></div>
+        <button class="sp-modal__x" (click)="closeEdit()"><app-icon name="x" [size]="16"></app-icon></button>
+      </div>
+      <div class="sp-modal__body">
+        <div class="form-grid">
+          <div class="sp-field full"><label>Name <span class="req">*</span></label><input class="sp-input" [(ngModel)]="form.name" placeholder="e.g. Aroma Facial" /></div>
+          <div class="sp-field"><label>Category</label>
+            <select class="sp-select" [(ngModel)]="form.category">
+              <option>Facial</option><option>Hair</option><option>Massage</option><option>Nail Care</option>
+              <option>Makeup</option><option>Body Treatment</option><option>Threading & Waxing</option>
+            </select>
+          </div>
+          <div class="sp-field"><label>Duration (min)</label><input class="sp-input" type="number" [(ngModel)]="form.durationMin" /></div>
+          <div class="sp-field"><label>Price (₹)</label><input class="sp-input" type="number" [(ngModel)]="form.price" /></div>
+          <div class="sp-field full"><label>Description</label><textarea class="sp-textarea" [(ngModel)]="form.description" placeholder="Short description…"></textarea></div>
+        </div>
+      </div>
+      <div class="sp-modal__foot">
+        <button class="sp-btn sp-btn-ghost" (click)="closeEdit()">Cancel</button>
+        <button class="sp-btn sp-btn-primary" (click)="save()">{{ editing ? 'Save Changes' : 'Add Service' }}</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (toast) { <div class="sp-toast">{{ toast }}</div> }

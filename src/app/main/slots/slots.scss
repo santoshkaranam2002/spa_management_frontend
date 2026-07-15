@@ -1,0 +1,29 @@
+  .legend { display:flex; gap:12px; flex-wrap:wrap; }
+  .legend span { font-size:11.5px; color:var(--muted); display:flex; align-items:center; gap:5px; }
+  .lg { width:9px; height:9px; border-radius:3px; display:inline-block; }
+  .lg-a { background:var(--sage); } .lg-b { background:var(--plum-400); } .lg-i { background:var(--gold); } .lg-x { background:var(--muted-2); }
+
+  .slot-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+  .slot { border:1px solid var(--line); border-radius:var(--r-md); padding:12px; cursor:pointer; transition:transform 140ms ease, box-shadow 140ms ease; }
+  .slot:hover { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+  .slot__time { font-weight:700; font-size:13px; font-family:var(--font-mono); }
+  .slot__cust { font-size:12.5px; font-weight:600; margin-top:6px; }
+  .slot__svc { font-size:11px; color:var(--muted); }
+  .slot__status { font-size:12px; margin-top:6px; font-weight:600; }
+  .slot--available { background:var(--sage-soft); border-color:#cfe0ce; }
+  .slot--available .slot__status { color:#4F6B51; }
+  .slot--booked { background:var(--plum-50); border-color:var(--plum-200); }
+  .slot--inprogress { background:var(--gold-soft); border-color:#eBd3a6; }
+  .slot--blocked { background:var(--cream-2); border-color:var(--line); opacity:0.75; }
+  .slot--blocked .slot__status { color:var(--muted); }
+
+  .dayrow { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line-soft); }
+  .dayrow:last-child { border-bottom:0; }
+  .dayrow__main { flex:1; }
+  .dayrow__name { font-weight:600; font-size:13.5px; }
+  .dayrow__tmpl { font-size:11.5px; color:var(--muted); }
+  .dayrow__hours { font-size:12.5px; color:var(--ink-soft); }
+  .switch { width:40px; height:23px; border-radius:var(--r-pill); border:0; background:var(--line); position:relative; cursor:pointer; transition:background 160ms ease; flex-shrink:0; }
+  .switch span { position:absolute; top:2px; left:2px; width:19px; height:19px; border-radius:50%; background:#fff; box-shadow:var(--shadow-xs); transition:transform 160ms ease; }
+  .switch.on { background:var(--plum-500); }
+  .switch.on span { transform:translateX(17px); }
