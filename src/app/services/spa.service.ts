@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class SpaService {
 
   // Base URL of the Django REST backend. Change here if the API runs elsewhere.
-  private baseUrl = 'http://spamanagement-prod.eba-bveisy2i.us-east-1.elasticbeanstalk.com/api';
+  private baseUrl = '/api';
 
   constructor(private http: HttpClient) {}
 
