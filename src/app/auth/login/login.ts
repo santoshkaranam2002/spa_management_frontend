@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class Login {
 
-  // ── form state (design only — no real auth) ──
   email = '';
   password = '';
   showPassword = false;
@@ -24,7 +23,7 @@ export class Login {
     this.showPassword = !this.showPassword;
   }
 
-  // Demo sign-in — any credentials work. Wire your API here later.
+
   signIn(): void {
     this.router.navigate(['/dashboard']);
   }
